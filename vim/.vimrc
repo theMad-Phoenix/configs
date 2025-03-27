@@ -17,9 +17,24 @@ set showmatch
 set noswapfile
 set clipboard=unnamedplus
 
-set cursorline
+set cursorline cursorcolumn
 highlight CursorLine ctermbg=234 guibg=#1c1c1c
+highlight Cursorcolumn ctermbg=234 guibg=#1c1c1c
 highlight LineNr ctermfg=grey guifg=grey
+if exists('$TMUX')
+  " 在 tmux 中使用 escape sequences 改变光标样式
+  let &t_SI = "\e[6 q"  " 插入模式：竖线
+  let &t_SR = "\e[4 q"  " 替换模式：下划线
+  let &t_EI = "\e[2 q"  " 其他模式：块状
+else
+  " 直接在支持的终端中使用
+  let &t_SI = "\e[5 q"
+  let &t_SR = "\e[4 q"
+  let &t_EI = "\e[2 q"
+endif
+
+set timeoutlen=300  " 键映射超时时间（减少可能导致其他映射问题）
+set ttimeoutlen=20  " 终端转义序列超时时间（专门用于 escape 处理）
 
 highlight Comment ctermfg=lightblue guifg=lightblue
 highlight Normal ctermfg=grey guifg=grey
